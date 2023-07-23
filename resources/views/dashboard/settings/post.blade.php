@@ -6,13 +6,16 @@
     <div class="row my-3">
         <div class="col-lg-8">
             <h1 class="mb-3">{{ $post->title }}</h1>
-
-            <a href="/dashboard/settings/{{ $post->user_id }}/detail" class="btn btn-success"><span data-feather="arrow-left"></span> Back to all my posts</a>
+            <a href="/dashboard/settings/{{ $post->user_id }}/detail" class="btn btn-success"><span data-feather="arrow-left"></span> Back to all posts</a>
             <a href="/dashboard/settings/edit/{{ $post->slug }}" class="btn btn-warning"><span data-feather="edit"></span> Edit</a>
-            <form action="/dashboard/posts/{{ $post->slug }}" method="post" class="d-inline">
+            <form action="/dashboard/settings/{{ $post->slug }}" method="post" class="d-inline">
                 @method('delete')
                 @csrf
-                <button class="btn btn-danger" onclick="return confirm('Are you sure?')"><span data-feather="x-circle"></span> Delete</button>
+                <!-- Include the id as a hidden input -->
+                <input type="hidden" name="id" value="{{ $post->id }}">
+                <button class="btn btn-danger" onclick="return confirm('Are you sure?')">
+                    <span data-feather="x-circle"></span> Delete
+                </button>
             </form>
 
             @if ($post->image)

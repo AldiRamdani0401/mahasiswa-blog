@@ -126,15 +126,38 @@ class SettingsController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+
+    public function destroy()
     {
-        //
+        $postId = $_POST['id'];
+
+        // Cari data post berdasarkan $postId
+        $post = Post::find($postId);
+
+        if (!$post) {
+            // Jika data post tidak ditemukan, alihkan pengguna dengan pesan error
+            return redirect('/dashboard/settings')->with('error', 'Post not found!');
+        }
+
+        // Menghapus gambar terkait (jika ada)
+        if ($post->image) {
+            Storage::delete($post->image);
+        }
+
+        // Menghapus data post berdasarkan $postId
+        $post->delete();
+
+        // Alihkan pengguna ke halaman /dashboard/settings dengan pesan sukses
+        return redirect('/dashboard/settings')->with('success', 'Post has been deleted!');
     }
+
+
 
     public function detail($userId)
     {
         return view('dashboard.settings.detail', [
-            "posts" => Post::where('user_id', $userId)->get()
+            "posts" => Post::where('user_id', $userId)->get(),
+            "user" => User::where('id', $userId)->get()
         ]);
     }
 }

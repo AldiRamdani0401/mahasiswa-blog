@@ -96,4 +96,6 @@ Route::get('/dashboard/settings/post/{post}', [SettingsController::class, 'show'
 
 Route::get('/dashboard/settings/edit/{post}', [SettingsController::class, 'edit']);
 
+Route::delete('/dashboard/settings/{post}', 'SettingsController@destroy')->name('settings.destroy');
+
 // Route::resource('/dashboard/categories', AdminCategoryController::class)->except('show');
