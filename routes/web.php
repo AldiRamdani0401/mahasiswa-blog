@@ -91,7 +91,9 @@ Route::resource('/dashboard/categories', AdminCategoryController::class)->except
 Route::resource('/dashboard/settings', SettingsController::class)->except('show')->middleware('admin');
 
 Route::get('/dashboard/settings/{User::id}/detail', [SettingsController::class, 'detail']);
-Route::get('/dashboard/settings/{Post::id}/show', [SettingsController::class, 'show']);
 
+Route::get('/dashboard/settings/post/{post}', [SettingsController::class, 'show']);
+
+Route::get('/dashboard/settings/edit/{post}', [SettingsController::class, 'edit']);
 
 // Route::resource('/dashboard/categories', AdminCategoryController::class)->except('show');
