@@ -28,7 +28,7 @@
                 <td>{{ $post->title }}</td>
                 <td>{{ $post->category->name }}</td>
                 <td>
-                    <a href="/dashboard/settings/post/{{ $post->slug }}" class="badge bg-info"><span data-feather="eye"></span></a>
+                    <a href="/dashboard/post-settings/post/{{ $post->slug }}" class="badge bg-info"><span data-feather="eye"></span></a>
                 </td>
             </tr>
         @endforeach

@@ -88,14 +88,16 @@ Route::resource('/dashboard/posts', DashboardPostController::class)->middleware(
 
 Route::resource('/dashboard/categories', AdminCategoryController::class)->except('show')->middleware('admin');
 
-Route::resource('/dashboard/settings', SettingsController::class)->except('show')->middleware('admin');
+Route::resource('/dashboard/post-settings', SettingsController::class)->except('show')->middleware('admin');
 
-Route::get('/dashboard/settings/{User::id}/detail', [SettingsController::class, 'detail']);
+Route::get('/dashboard/post-settings/{user}/detail', [SettingsController::class, 'detail'])->name('post-settings.detail');
 
-Route::get('/dashboard/settings/post/{post}', [SettingsController::class, 'show']);
+Route::get('/dashboard/post-settings/post/{post}', [SettingsController::class, 'show']);
 
-Route::get('/dashboard/settings/edit/{post}', [SettingsController::class, 'edit']);
+Route::get('/dashboard/post-settings/edit/{post}', [SettingsController::class, 'edit']);
 
-Route::delete('/dashboard/settings/{post}', 'SettingsController@destroy')->name('settings.destroy');
+Route::put('/dashboard/post-settings/update', [SettingsController::class, 'update']);
+
+Route::delete('/dashboard/post-settings/{post}', 'SettingsController@destroy')->name('settings.destroy');
 
 // Route::resource('/dashboard/categories', AdminCategoryController::class)->except('show');

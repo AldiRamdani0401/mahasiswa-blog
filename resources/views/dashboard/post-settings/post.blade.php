@@ -6,9 +6,9 @@
     <div class="row my-3">
         <div class="col-lg-8">
             <h1 class="mb-3">{{ $post->title }}</h1>
-            <a href="/dashboard/settings/{{ $post->user_id }}/detail" class="btn btn-success"><span data-feather="arrow-left"></span> Back to all posts</a>
-            <a href="/dashboard/settings/edit/{{ $post->slug }}" class="btn btn-warning"><span data-feather="edit"></span> Edit</a>
-            <form action="/dashboard/settings/{{ $post->slug }}" method="post" class="d-inline">
+            <a href="/dashboard/post-settings/{{ $post->user_id }}/detail" class="btn btn-success"><span data-feather="arrow-left"></span> Back to all posts</a>
+            <a href="/dashboard/post-settings/edit/{{ $post->slug }}" class="btn btn-warning"><span data-feather="edit"></span> Edit</a>
+            <form action="/dashboard/post-settings/{{ $post->slug }}" method="post" class="d-inline">
                 @method('delete')
                 @csrf
                 <!-- Include the id as a hidden input -->

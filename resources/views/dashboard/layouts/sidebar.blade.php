@@ -41,7 +41,7 @@
       </ul>
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard/settings*') ? 'active' : '' }}" href="/dashboard/settings">
+          <a class="nav-link {{ Request::is('dashboard/post-settings*') ? 'active' : '' }}" href="/dashboard/post-settings">
             <span data-feather="settings"></span>
             Post Settings
           </a>

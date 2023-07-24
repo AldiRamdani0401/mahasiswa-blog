@@ -18,7 +18,7 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        return view('dashboard.settings.index', [
+        return view('dashboard.post-settings.index', [
             'users' => User::all()
         ]);
     }
@@ -52,7 +52,7 @@ class SettingsController extends Controller
      */
     public function show(Post $post)
     {
-        return view('dashboard.settings.post', [
+        return view('dashboard.post-settings.post', [
             'post' => $post
         ]);
     }
@@ -65,7 +65,7 @@ class SettingsController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('dashboard.settings.edit', [
+        return view('dashboard.post-settings.edit', [
             'post' => $post,
             'categories' => Category::all()
         ]);
@@ -88,9 +88,9 @@ class SettingsController extends Controller
             'body' => 'required'
         ];
 
-        // Jika slug diubah, lakukan validasi unikitas slug
+        // Jika slug diubah, lakukan validasi unik slug
         if ($request->slug != $post->slug) {
-            $rules['slug'] = 'required|unique:posts';
+            $rules['slug'] = 'required';
         }
 
         $validatedData = $request->validate($rules);
@@ -113,9 +113,12 @@ class SettingsController extends Controller
             $validatedData['slug'] = $post->slug;
         }
 
-        Post::where('id', $post->id)->update($validatedData);
+        Post::where('id', $_POST['id'])->update($validatedData);
 
-        return redirect('/dashboard/settings');
+
+    // Use route() helper to generate the redirect URL with the user ID
+    return redirect()->route('post-settings.detail', ['user' => $_POST['userId']])->with('success', 'Post updated');
+
     }
 
 
@@ -136,7 +139,7 @@ class SettingsController extends Controller
 
         if (!$post) {
             // Jika data post tidak ditemukan, alihkan pengguna dengan pesan error
-            return redirect('/dashboard/settings')->with('error', 'Post not found!');
+            return redirect('/dashboard/post-settings')->with('error', 'Post not found!');
         }
 
         // Menghapus gambar terkait (jika ada)
@@ -148,14 +151,14 @@ class SettingsController extends Controller
         $post->delete();
 
         // Alihkan pengguna ke halaman /dashboard/settings dengan pesan sukses
-        return redirect('/dashboard/settings')->with('success', 'Post has been deleted!');
+        return redirect('/dashboard/post-settings')->with('success', 'Post has been deleted!');
     }
 
 
 
     public function detail($userId)
     {
-        return view('dashboard.settings.detail', [
+        return view('dashboard.post-settings.detail', [
             "posts" => Post::where('user_id', $userId)->get(),
             "user" => User::where('id', $userId)->get()
         ]);

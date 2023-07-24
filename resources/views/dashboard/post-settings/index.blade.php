@@ -28,7 +28,7 @@
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
                 <td>
-                    <a href="/dashboard/settings/{{ $user->id }}/detail" class="badge bg-primary" style="text-decoration: none;"><span data-feather="eye"></span> Detail</a>
+                    <a href="/dashboard/post-settings/{{ $user->id }}/detail" class="badge bg-primary" style="text-decoration: none;"><span data-feather="eye"></span> Detail</a>
                 </td>
             </tr>
         @endforeach
