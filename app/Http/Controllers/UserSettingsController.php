@@ -65,7 +65,7 @@ class UserSettingsController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        echo "change password users settings wokeh.. ";
     }
 
     /**
@@ -128,5 +128,12 @@ class UserSettingsController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    public function change(User $user)
+    {
+        return view('dashboard.user-settings.change', [
+            'user' => $user
+        ]);
     }
 }

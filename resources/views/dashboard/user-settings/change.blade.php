@@ -1,9 +1,8 @@
 @extends('dashboard.layouts.main')
 
 @section('container')
-
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">User Settings</h1>
+    <h1 class="h2">Account Settings</h1>
 </div>
 
 <div class="row justify-content-center">
@@ -22,33 +21,33 @@
           </div>
           @endif
         </div>
-            <h1 class="h3 mb-3 fw-normal text-center">Edit User</h1>
-            <form action="/dashboard/user-settings/update" method="post" class="text-center">
+            <h1 class="h3 mb-3 fw-normal text-center">Change Password</h1>
+            <form action="/dashboard/account-settings/changePassword" method="post" class="text-center">
               @method('put')
               @csrf
               <input type="hidden" name="id" id="id" placeholder="name" required value="{{ $user->id }}">
               <div class="form-floating">
-                <input type="text" name="name" class="form-control rounded-top mb-2 @error('name') is-invalid @enderror" id="name" placeholder="name" required value="{{ $user->name }}">
-                <label for="name">Name</label>
-                @error('name')
+                <input type="password" name="newPassword" class="form-control mb-2 rounded-bottom @error('password') is-invalid @enderror" id="newPassword" placeholder="New Password" required>
+                <label for="newPasword">New Password ( minimal : 5 karakter )</label>
+                @error('password')
                 <div class="invalid-feedback">
                   {{ $message }}
                 </div>
                 @enderror
               </div>
               <div class="form-floating">
-                <input type="text" name="username" class="form-control mb-2 @error('username') is-invalid @enderror" id="username" placeholder="username" required value="{{ $user->username  }}">
-                <label for="username">Username</label>
-                @error('username')
+                <input type="password" name="newConfPassword" class="form-control mb-2 rounded-bottom @error('password') is-invalid @enderror" id="newConfPassword" placeholder="confirm Password" required>
+                <label for="newConfPassword">Confirm Password</label>
+                @error('password')
                 <div class="invalid-feedback">
                   {{ $message }}
                 </div>
                 @enderror
               </div>
               <div class="form-floating">
-                <input type="email" name="email" class="form-control mb-2 @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" required value="{{ $user->email }}">
-                <label for="email">Email address</label>
-                @error('email')
+                <input type="password" name="password" class="form-control mb-2 rounded-bottom @error('password') is-invalid @enderror" id="password" placeholder="Password" required>
+                <label for="password">Password</label>
+                @error('password')
                 <div class="invalid-feedback">
                   {{ $message }}
                 </div>
@@ -57,9 +56,7 @@
               <button class="w-50 btn btn-success mt-3" type="submit">Save</button>
             </form>
             <div class="text-center">
-              <a class="btn btn-warning mt-3" href="/dashboard/user-settings">Kembali</a>
-              <a class="btn btn-primary mt-3" href="/dashboard/user-settings/show/{{ $user->id }}/change">Change Password</a>
-              <a class="btn btn-danger mt-3" href="/dashboard/user-settings">Delete</a>
+              <a class="btn btn-primary mt-3" href="/dashboard/user-settings/">Kembali</a>
             </div>
         </main>
     </div>

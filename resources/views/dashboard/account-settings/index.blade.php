@@ -66,7 +66,7 @@
               <button class="w-50 btn btn-success mt-3" type="submit">Save</button>
             </form>
             <div class="text-center">
-              <a class="btn btn-primary mt-3" href="/dashboard/account-settings/change-password/change">Change Password</a>
+              <a class="btn btn-primary mt-3" href="/dashboard/account-settings/change">Change Password</a>
             </div>
         </main>
     </div>

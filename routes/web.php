@@ -115,3 +115,5 @@ Route::resource('/dashboard/user-settings', UserSettingsController::class)->midd
 Route::get('/dashboard/user-settings/show/{user}', [UserSettingsController::class, 'show'])->name('user-settings.show');
 
 Route::put('/dashboard/user-settings/update', [UserSettingsController::class, 'update'])->name('user-settings.update');
+
+Route::get('/dashboard/user-settings/show/{user}/change', [UserSettingsController::class, 'change']);
