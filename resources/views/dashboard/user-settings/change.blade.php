@@ -22,7 +22,7 @@
           @endif
         </div>
             <h1 class="h3 mb-3 fw-normal text-center">Change Password</h1>
-            <form action="/dashboard/account-settings/changePassword" method="post" class="text-center">
+            <form action="/dashboard/user-settings/update" method="post" class="text-center">
               @method('put')
               @csrf
               <input type="hidden" name="id" id="id" placeholder="name" required value="{{ $user->id }}">
@@ -38,15 +38,6 @@
               <div class="form-floating">
                 <input type="password" name="newConfPassword" class="form-control mb-2 rounded-bottom @error('password') is-invalid @enderror" id="newConfPassword" placeholder="confirm Password" required>
                 <label for="newConfPassword">Confirm Password</label>
-                @error('password')
-                <div class="invalid-feedback">
-                  {{ $message }}
-                </div>
-                @enderror
-              </div>
-              <div class="form-floating">
-                <input type="password" name="password" class="form-control mb-2 rounded-bottom @error('password') is-invalid @enderror" id="password" placeholder="Password" required>
-                <label for="password">Password</label>
                 @error('password')
                 <div class="invalid-feedback">
                   {{ $message }}

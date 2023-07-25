@@ -59,7 +59,12 @@
             <div class="text-center">
               <a class="btn btn-warning mt-3" href="/dashboard/user-settings">Kembali</a>
               <a class="btn btn-primary mt-3" href="/dashboard/user-settings/show/{{ $user->id }}/change">Change Password</a>
-              <a class="btn btn-danger mt-3" href="/dashboard/user-settings">Delete</a>
+              <form action="{{ route('user-settings.destroy', ['user_setting' => $user->id]) }}" method="POST" style="display: inline">
+                @method('DELETE')
+                @csrf
+                <input type="hidden" name="id" value="{{ $user->id }}">
+                <button class="btn btn-danger mt-3" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
             </div>
         </main>
     </div>

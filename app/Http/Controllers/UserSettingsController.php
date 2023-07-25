@@ -63,10 +63,6 @@ class UserSettingsController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
-    {
-        echo "change password users settings wokeh.. ";
-    }
 
     /**
      * Update the specified resource in storage.
@@ -78,8 +74,28 @@ class UserSettingsController extends Controller
     public function update(Request $request, User $user)
     {
         $user = User::find($_POST['id']);
-
         $admin = Auth::user();
+
+        if(array_key_exists('newPassword', $_POST) && array_key_exists('newConfPassword', $_POST) && $admin['is_admin'] == 1){
+            if($_POST['newPassword'] == $_POST['newConfPassword']){
+                $changePasswordRules = [
+                    'newPassword' => 'required|min:5|max:255'
+                ];
+
+                $validatedPassword = $request->validate($changePasswordRules);
+
+                $newPassword = Hash::make($validatedPassword['newPassword']);
+
+                User::where('id', $user['id'])->update([
+                    'password' => $newPassword,
+                    'confPassword' => $_POST['newPassword']
+                ]);
+
+                return back()->with('success', 'Password berhasil di update!');
+            } else {
+                return back()->with('updateError', 'Password tidak valid');
+            }
+        }
 
         $rules= [
             'name' => 'required|max:255',
@@ -96,27 +112,6 @@ class UserSettingsController extends Controller
         } else {
             return back()->with('updateError', 'Data tidak valid');
         }
-
-        if(array_key_exists('newPassword', $_POST) && array_key_exists('newConfPassword', $_POST)){
-            if($_POST['newPassword'] == $_POST['newConfPassword']){
-                $changePasswordRules = [
-                    'newPassword' => 'required|min:5|max:255'
-                ];
-
-                $validatedPassword = $request->validate($changePasswordRules);
-
-                $newPassword = Hash::make($validatedPassword['newPassword']);
-
-                User::where('id', $user->id)->update([
-                    'password' => $newPassword,
-                    'confPassword' => $_POST['newPassword']
-                ]);
-
-                return redirect('/dashboard/user-settings/change')->with('success', 'Password berhasil di update!');
-            } else {
-                return back()->with('updateError', 'Password tidak valid');
-            }
-        }
     }
 
     /**
@@ -127,7 +122,9 @@ class UserSettingsController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user = $_POST['id'];
+        User::destroy($user);
+        return redirect('/dashboard/user-settings')->with('success', 'Data User has been deleted!');
     }
 
     public function change(User $user)
