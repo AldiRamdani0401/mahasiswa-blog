@@ -29,7 +29,7 @@
               <input type="hidden" name="id" id="id" placeholder="name" required value="{{ $user->id }}">
               <div class="form-floating">
                 <input type="password" name="newPassword" class="form-control mb-2 rounded-bottom @error('password') is-invalid @enderror" id="newPassword" placeholder="New Password" required>
-                <label for="newPasword">New Password</label>
+                <label for="newPasword">New Password ( minimal : 5 karakter )</label>
                 @error('password')
                 <div class="invalid-feedback">
                   {{ $message }}
@@ -56,6 +56,9 @@
               </div>
               <button class="w-50 btn btn-success mt-3" type="submit">Save</button>
             </form>
+            <div class="text-center">
+              <a class="btn btn-primary mt-3" href="/dashboard/account-settings/">Kembali</a>
+            </div>
         </main>
     </div>
 </div>

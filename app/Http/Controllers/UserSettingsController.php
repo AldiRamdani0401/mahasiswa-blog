@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class AccountSettings extends Controller
+class UserSettingsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,19 @@ class AccountSettings extends Controller
      */
     public function index()
     {
-        return view('dashboard/account-settings/index', [
-            'user' => User::where('id', auth()->user()->id)->first()
+        return view('dashboard.user-settings.index', [
+            'users' => User::all()
         ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -38,11 +49,23 @@ class AccountSettings extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function show()
+     public function show(User $user)
+     {
+         return view('dashboard.user-settings.show', [
+             'user' => $user
+         ]);
+     }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
     {
-        return view('dashboard/account-settings/change', [
-            'user' =>  User::where('id', auth()->user()->id)->first()
-        ]);
+        //
     }
 
     /**
@@ -56,10 +79,28 @@ class AccountSettings extends Controller
     {
         $user = User::find($_POST['id']);
 
-        if (array_key_exists('newPassword', $_POST) && array_key_exists('newConfPassword', $_POST)) {
-            if ($_POST['newPassword'] == $_POST['newConfPassword']) {
+        $admin = Auth::user();
+
+        $rules= [
+            'name' => 'required|max:255',
+            'username' => 'required|max:255',
+            'email' => 'required|email:dns'
+        ];
+
+        if($admin['is_admin'] == 1){
+            $validatedData = $request->validate($rules);
+
+            User::where('id', $user->id)->update($validatedData);
+
+            return redirect()->route('user-settings.show', ['user' => $user->id])->with('success', 'Account berhasil di update!');
+        } else {
+            return back()->with('updateError', 'Data tidak valid');
+        }
+
+        if(array_key_exists('newPassword', $_POST) && array_key_exists('newConfPassword', $_POST)){
+            if($_POST['newPassword'] == $_POST['newConfPassword']){
                 $changePasswordRules = [
-                    'newPassword' => 'required|min:5|max:255',
+                    'newPassword' => 'required|min:5|max:255'
                 ];
 
                 $validatedPassword = $request->validate($changePasswordRules);
@@ -71,29 +112,12 @@ class AccountSettings extends Controller
                     'confPassword' => $_POST['newPassword']
                 ]);
 
-                return redirect('/dashboard/account-settings/change')->with('success', 'Password berhasil di update!');
+                return redirect('/dashboard/user-settings/change')->with('success', 'Password berhasil di update!');
             } else {
                 return back()->with('updateError', 'Password tidak valid');
             }
         }
-
-        if ($user['confPassword'] == $_POST['password']) {
-            $rules = [
-                'name' => 'required|max:255',
-                'username' => 'required|max:255',
-                'email' => 'required|email:dns',
-            ];
-
-            $validatedData = $request->validate($rules);
-
-            User::where('id', $user->id)->update($validatedData);
-
-            return redirect('/dashboard/account-settings')->with('success', 'Account berhasil di update!');
-        } else {
-            return back()->with('updateError', 'Password tidak valid');
-        }
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -49,7 +49,7 @@
       </ul>
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard/') ? 'active' : '' }}" href="/dashboard/categories">
+          <a class="nav-link {{ Request::is('dashboard/user-settings*') ? 'active' : '' }}" href="/dashboard/user-settings">
             <span data-feather="users"></span>
             User Settings
           </a>

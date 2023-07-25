@@ -14,6 +14,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardPostController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\UserSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,3 +108,10 @@ Route::delete('/dashboard/post-settings/{post}', 'SettingsController@destroy')->
 Route::resource('/dashboard/account-settings', AccountSettings::class)->middleware('auth');
 
 Route::put('/dashboard/account-settings/update', [SettingsController::class, 'update'])->middleware('auth');
+
+
+Route::resource('/dashboard/user-settings', UserSettingsController::class)->middleware('auth');
+
+Route::get('/dashboard/user-settings/show/{user}', [UserSettingsController::class, 'show'])->name('user-settings.show');
+
+Route::put('/dashboard/user-settings/update', [UserSettingsController::class, 'update'])->name('user-settings.update');

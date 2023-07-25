@@ -2,7 +2,7 @@
 
 @section('container')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Post Settings</h1>
+  <h1 class="h2">User Settings</h1>
 </div>
 
 @if(session()->has('success'))
@@ -28,7 +28,9 @@
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
                 <td>
-                    <a href="/dashboard/post-settings/{{ $user->id }}/detail" class="badge bg-primary" style="text-decoration: none;"><span data-feather="eye"></span> Detail</a>
+                    <a class="badge bg-primary" style="text-decoration: none;"" href="{{ route('user-settings.show', ['user' => $user->id]) }}">
+                        <span data-feather="settings"></span> Setting
+                    </a>
                 </td>
             </tr>
         @endforeach
