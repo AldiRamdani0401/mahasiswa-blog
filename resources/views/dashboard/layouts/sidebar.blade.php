@@ -20,7 +20,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard/') ? 'active' : '' }}" href="/dashboard/posts">
+          <a class="nav-link {{ Request::is('dashboard/account-settings*') ? 'active' : '' }}" href="/dashboard/account-settings/">
             <span data-feather="user"></span>
             Account Settings
           </a>

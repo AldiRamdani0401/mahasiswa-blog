@@ -3,7 +3,9 @@
 // use App\Models\Post;
 // use App\Models\User;
 
+use App\Http\Controllers\AccountSettings;
 use App\Models\Category;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -80,7 +82,9 @@ Route::get('/register', [RegisterController::class, 'index'])->middleware('guest
 Route::post('/register', [RegisterController::class, 'store']);
 
 Route::get('/dashboard', function(){
-    return view('dashboard.index');
+            return view('dashboard.index',  [
+                'user' => User::where('id', auth()->user()->id)->first()
+            ]);
 })->middleware('auth');
 
 Route::get('/dashboard/posts/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
@@ -100,4 +104,6 @@ Route::put('/dashboard/post-settings/update', [SettingsController::class, 'updat
 
 Route::delete('/dashboard/post-settings/{post}', 'SettingsController@destroy')->name('settings.destroy');
 
-// Route::resource('/dashboard/categories', AdminCategoryController::class)->except('show');
+Route::resource('/dashboard/account-settings', AccountSettings::class)->middleware('auth');
+
+Route::put('/dashboard/account-settings/update', [SettingsController::class, 'update']);

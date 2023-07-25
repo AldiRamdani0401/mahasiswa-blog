@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\VarDumper\VarDumper;
 
 class DashboardPostController extends Controller
 {
@@ -20,7 +20,7 @@ class DashboardPostController extends Controller
     public function index()
     {
         return view('dashboard.posts.index', [
-            'posts' => Post::where('user_id', auth()->user()->id)->get()
+            'posts' => Post::where('user_id', auth()->user()->id)->get(),
         ]);
     }
 
