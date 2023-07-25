@@ -40,7 +40,7 @@ class AccountSettings extends Controller
 
     public function show()
     {
-        return view('dashboard/account-settings/change',[
+        return view('dashboard/account-settings/change', [
             'user' =>  User::where('id', auth()->user()->id)->first()
         ]);
     }
@@ -55,21 +55,16 @@ class AccountSettings extends Controller
     public function update(Request $request, User $user)
     {
         $user = User::find($_POST['id']);
-        if($user['confPassword'] == $_POST['password']){
-            $rules = [
-                'name' => 'required|max:255',
-                'username' => 'required|max:255',
-                'email' => 'required|email:dns',
-            ];
 
-            if($_POST['newPassword'] == $_POST['newConfPassword']){
+        if (array_key_exists('newPassword', $_POST) && array_key_exists('newConfPassword', $_POST)) {
+            if ($_POST['newPassword'] == $_POST['newConfPassword']) {
                 $changePasswordRules = [
                     'password' => 'required|min:5|max:255'
                 ];
 
-                $validatedData = $request->validate($changePasswordRules);
+                $validatedPassword = $request->validate($changePasswordRules);
 
-                $newPassword = Hash::make($validatedData['password']);
+                $newPassword = Hash::make($validatedPassword['password']);
 
                 User::where('id', $user->id)->update([
                     'password' => $newPassword,
@@ -77,23 +72,28 @@ class AccountSettings extends Controller
                 ]);
 
                 return redirect('/dashboard/account-settings/change')->with('success', 'Password berhasil di update!');
-
-                die;
             } else {
                 return back()->with('updateError', 'Password tidak valid');
-
-                die;
             }
+        }
+
+        if ($user['confPassword'] == $_POST['password']) {
+            $rules = [
+                'name' => 'required|max:255',
+                'username' => 'required|max:255',
+                'email' => 'required|email:dns',
+            ];
 
             $validatedData = $request->validate($rules);
 
             User::where('id', $user->id)->update($validatedData);
 
             return redirect('/dashboard/account-settings')->with('success', 'Account berhasil di update!');
-        }else{
+        } else {
             return back()->with('updateError', 'Password tidak valid');
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

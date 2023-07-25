@@ -106,4 +106,4 @@ Route::delete('/dashboard/post-settings/{post}', 'SettingsController@destroy')->
 
 Route::resource('/dashboard/account-settings', AccountSettings::class)->middleware('auth');
 
-Route::put('/dashboard/account-settings/update', [SettingsController::class, 'update']);
+Route::put('/dashboard/account-settings/update', [SettingsController::class, 'update'])->middleware('auth');
