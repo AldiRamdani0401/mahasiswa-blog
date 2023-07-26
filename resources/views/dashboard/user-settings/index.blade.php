@@ -23,6 +23,7 @@
       </thead>
       <tbody>
         @foreach ($users as $user)
+            @if(!$user['is_admin'] == 1)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $user->id }}</td>
@@ -33,6 +34,7 @@
                     </a>
                 </td>
             </tr>
+            @endif
         @endforeach
       </tbody>
     </table>

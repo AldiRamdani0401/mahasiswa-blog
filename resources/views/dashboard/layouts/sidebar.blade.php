@@ -8,7 +8,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="/dashboard">
+          <a class="nav-link {{ Request::is('dashboard/mail*') ? 'active' : '' }}" aria-current="page" href="/dashboard/mail">
             <span data-feather="mail"></span>
             Mail Box
           </a>

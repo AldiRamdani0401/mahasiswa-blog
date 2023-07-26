@@ -13,6 +13,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardPostController;
 use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserSettingsController;
 
@@ -117,3 +118,10 @@ Route::get('/dashboard/user-settings/show/{user}', [UserSettingsController::clas
 Route::put('/dashboard/user-settings/update', [UserSettingsController::class, 'update'])->name('user-settings.update');
 
 Route::get('/dashboard/user-settings/show/{user}/change', [UserSettingsController::class, 'change']);
+
+
+Route::get('/dashboard/mail/', [MailController::class,'index']);
+Route::put('/dashboard/mail/detail', [MailController::class, 'openMail']);
+Route::get('/dashboard/mail/detail/{contactId}', [MailController::class, 'detail']);
+Route::post('/dashboard/mail/send', [MailController::class,'sendMail']);
+Route::get('/dashboard/mail/create', [MailController::class, 'createMail']);
