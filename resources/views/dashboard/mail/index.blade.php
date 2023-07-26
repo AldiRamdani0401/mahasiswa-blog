@@ -17,66 +17,38 @@
     <table class="table table-sm">
         <thead>
             <tr>
-                <th scope="col">Balasan</th>
+                <th scope="col">Pengirim</th>
+                <th scope="col">Contact id</th>
                 <th scope="col">Waktu</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
+            @php
+                $pengirimNames = [];
+            @endphp
             @foreach ($mails as $mail)
-            @if(!auth()->user()->is_admin)
-            <tr>
-                <td>{{ $mail->pengirim->name }}</td>
-                <td>{{ $mail->created_at }}</td>
-                <td>{{ $mail->status }}</td>
-                <td>
-                    <form action="/dashboard/mail/detail" method="post" class="d-inline">
-                        @method('put')
-                        @csrf
-                        <input type="hidden" name="status" value="Read">
-                        <input type="hidden" name="userId" value="{{ $mail->user_id }}">
-                        <button class="badge bg-primary border-0"><span data-feather="mail"></button>
-                    </form>
-                </td>
-            </tr>
-            @else
-            @unless(!$mail->pengirim->name === auth()->user()->name)
-            <tr>
-                <td>{{ $mail->pengirim->name }}</td>
-                <td>{{ $mail->created_at }}</td>
-                <td>{{ $mail->status }}</td>
-                <td>
-                    <form action="/dashboard/mail/detail" method="post" class="d-inline">
-                        @method('put')
-                        @csrf
-                        <input type="hidden" name="status" value="Read">
-                        <input type="hidden" name="userId" value="{{ $mail->pengirim->id }}">
-                        <button class="badge bg-primary border-0"><span data-feather="mail"></button>
-                    </form>
-                </td>
-            </tr>
-            @endunless
-            @endif
-            @endforeach
-            @foreach ($adminMail as $mail)
-            <tr>
-                @if ($mail->pengirim->name !== Auth::user()->name)
-                    <td>{{ $mail->pengirim->name }}</td>
-                    <td>{{ $mail->created_at }}</td>
-                    <td>{{ $mail->status }}</td>
-                    <td>
-                        <form action="/dashboard/mail/detail" method="post" class="d-inline">
-                            @method('put')
-                            @csrf
-                            <input type="hidden" name="status" value="Read">
-                            <input type="hidden" name="userId" value="{{ $mail->user_id }}">
-                            <button class="badge bg-primary border-0"><span data-feather="mail"></span></button>
-                        </form>
-                    </td>
+                @if (!in_array($mail->pengirim->name, $pengirimNames))
+                    @php
+                        $pengirimNames[] = $mail->pengirim->name;
+                    @endphp
+                    <tr>
+                        <td>{{ $mail->pengirim->name }}</td>
+                        <td>{{ $mail->contact_id }}</td>
+                        <td>{{ $mail->created_at }}</td>
+                        <td>{{ $mail->status }}</td>
+                        <td>
+                            <form action="/dashboard/mail/detail" method="post" class="d-inline">
+                                @method('put')
+                                @csrf
+                                <input type="hidden" name="status" value="Read">
+                                <input type="hidden" name="userId" value="{{ $mail->user_id }}">
+                                <button class="badge bg-primary border-0"><span data-feather="mail"></span></button>
+                            </form>
+                        </td>
+                    </tr>
                 @endif
-            </tr>
-
             @endforeach
         </tbody>
     </table>

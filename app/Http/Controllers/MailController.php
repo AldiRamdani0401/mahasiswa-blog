@@ -15,21 +15,16 @@ class MailController extends Controller
         $user = Auth::user();
 
         return view('dashboard.mail.index', [
-            'mails' => Mail::where('contact_id', $user->id)->get(),
-            'user' => $user,
-            'adminMail' => Mail::all()
+            'mails' => Mail::where('recipient_id', $user->id)->get(),
         ]);
     }
 
     public function openMail()
     {
-        $userId = $_POST['userId'];
-        $status = $_POST['status'];
-
-        $contactId = Auth::user();
+        $userId = request('userId');
+        $status = request('status');
 
         $user = User::find($userId);
-        $mail = Mail::where('user_id', $userId)->get();
 
         Mail::where('user_id', $user->id)->update([
             'status' => $status
@@ -38,7 +33,8 @@ class MailController extends Controller
         $userIdDetail = $user->id;
 
         return view('dashboard.mail.detail', [
-            'mails' => Mail::where('contact_id', $userIdDetail)->get()
+            'penerima' => Mail::where('contact_id', Auth::user()->id)->get(),
+            'pengirim' => Mail::where('contact_id', $userIdDetail)->get(),
         ]);
     }
 
@@ -57,7 +53,8 @@ class MailController extends Controller
             'status' => $status,
             'pesan' => $pesan,
             'contact_id' => $contactId,
-            'user_id' => $userId
+            'user_id' => $userId,
+            'recipient_id' => $contactId
         ];
 
         // Menentukan aturan validasi
@@ -65,7 +62,8 @@ class MailController extends Controller
             'status' => 'required|max:20|string',
             'pesan' => 'required|max:255|string',
             'contact_id' => 'required|max:20|string',
-            'user_id' => 'required|max:20|integer'
+            'user_id' => 'required|max:20|integer',
+            'recipient_id' => 'required|max:20|integer'
         ];
 
         // Melakukan validasi
@@ -77,7 +75,7 @@ class MailController extends Controller
         }
 
         Mail::where('contact_id', $contactId)->update([
-            'status' => $status
+            'status' => $status,
         ]);
 
         // Jika validasi berhasil, data akan disimpan ke dalam tabel Mail

@@ -28,7 +28,7 @@
             <textarea name="pesan" id="pesan" cols="90" rows="10"></textarea>
         </div>
         <div>
-            <button type="submit" class="btn-lg btn-success m-4"><b>Send Mail</b></button>
+            <button type="submit" class="btn-lg btn-success m-4"><b>Send</b></button>
             <a class="btn btn-danger" href="/dashboard/mail/" style="text-decoration: none;">Kembali</a>
         </div>
     </form>
