@@ -14,31 +14,29 @@
 @endif
 
 <div class="table-responsive mt-3" style="border: solid black 1px ;max-height: 400px; overflow-y: auto;">
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Pengirim</th>
                 <th scope="col">Pesan</th>
-                <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
-            @if ($penerima->count() > 0)
-                @foreach ($penerima as $mail)
+            @if ($Mail->count() > 0)
+                @foreach ($Mail as $mail)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $mail->pengirim->name }}</td>
-                        <td>{{ $mail->pesan }}</td>
-                        <td>{{ $mail->status }}</td>
-                        @if ($mail->pengirim->name == Auth::user()->name)
+                        <td>{{ $mail->name }}</td>
+                        <td>{{ $mail->message }}</td>
+                        @if ($mail->user_id == Auth::user()->id)
                         <td>
                             <form action="/dashboard/mail/delete" method="post" class="d-inline">
                                 @method('delete')
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $mail->id }}">
-                                <input type="hidden" name="contactId" value="{{ $mail->contact_id }}">
+                                {{-- <input type="hidden" name="contactId" value="{{ $mail->contact_id }}"> --}}
                                 <button class="badge bg-danger border-0" onclick="return confirm('Are you sure?')">
                                     <span data-feather="x-circle"></span>
                                 </button>
@@ -60,14 +58,15 @@
 <main class="form-signin mt-5 text-center">
     <form action="/dashboard/mail/send" method="post">
         @csrf
-        @foreach ($penerima as $mail)
-            <input type="hidden" name="contactId" value="{{ $mail->contact_id }}">
-            <input type="hidden" name="status" value="Reply">
-            <input type="hidden" name="recipientId" value="{{ $mail->pengirim->id }}">
+        @foreach ($Mail as $mail)
+            <input type="hidden" name="chatId" value="{{ $mail->chat_id }}">
+            <input type="hidden" name="receiverId" value="{{ abs($mail->user_id - $mail->chat_id);
+            }}">
+            <input type="hidden" name="senderId" value="{{ Auth::user()->id }}">
         @endforeach
         <div class="form-floating mb-3">
-            <textarea name="pesan" class="form-control @error('pesan') is-invalid @enderror" id="pesan" autofocus required></textarea>
-            @error('pesan')
+            <textarea name="message" class="form-control @error('message') is-invalid @enderror" id="message" autofocus required></textarea>
+            @error('message')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

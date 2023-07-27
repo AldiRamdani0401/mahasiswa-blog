@@ -12,10 +12,15 @@ class Mail extends Model
     protected $with = ['pengirim'];
 
     // Attribut yang dapat diisi secara massal
-    protected $fillable = ['status', 'user_id', 'pesan', 'contact_id', 'recipient_id'];
+    protected $fillable = ['sender_id', 'receiver_id'];
 
     public function pengirim()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'sender_id', 'id');
+    }
+
+    public function penerima()
+    {
+        return $this->belongsTo(User::class, 'receiver_id', 'id');
     }
 }

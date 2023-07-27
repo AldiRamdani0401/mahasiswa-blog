@@ -14,13 +14,11 @@
 @endif
 
 <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table table-bordered text-center">
         <thead>
             <tr>
                 <th scope="col">Pengirim</th>
-                <th scope="col">Contact id</th>
                 <th scope="col">Waktu</th>
-                <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -37,15 +35,11 @@
                 @endphp
                 <tr>
                     <td>{{ $mail->pengirim->name }}</td>
-                    <td>{{ $mail->contact_id }}</td>
                     <td>{{ $mail->created_at }}</td>
-                    <td>{{ $mail->status }}</td>
                     <td>
-                        <form action="/dashboard/mail/detail" method="post" class="d-inline">
-                            @method('put')
+                        <form action="/dashboard/mail/detail/{{ $chatId[0]->chat_id }}" method="post" class="d-inline">
                             @csrf
-                            <input type="hidden" name="status" value="Read">
-                            <input type="hidden" name="userId" value="{{ $mail->user_id }}">
+                            <input type="hidden" name="chatId" value="{{ $chatId[0]->chat_id }}">
                             <button class="badge bg-primary border-0"><span data-feather="mail"></span></button>
                         </form>
                     </td>

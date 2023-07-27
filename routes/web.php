@@ -106,9 +106,9 @@ Route::get('/dashboard/user-settings/show/{user}/change', [UserSettingsControlle
 
 Route::get('/dashboard/mail/', [MailController::class,'index']);
 
-Route::put('/dashboard/mail/detail', [MailController::class, 'openMail']);
+Route::post('/dashboard/mail/detail/{chatId}', [MailController::class, 'openMail']);
 
-Route::get('/dashboard/mail/detail/{contactId}', [MailController::class, 'detail']);
+Route::get('/dashboard/mail/detail/{chatId}', [MailController::class, 'detail']);
 
 Route::post('/dashboard/mail/send', [MailController::class,'sendMail']);
 

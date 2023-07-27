@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mail;
 use App\Models\User;
-
+use App\Models\ChatRoom;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,48 +12,41 @@ class MailController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::user()->id;
 
         return view('dashboard.mail.index', [
-            'mails' => Mail::where('recipient_id', $user->id)->get(),
+            'mails' => Mail::where('receiver_id', $user)->get(),
+            'chatId' => ChatRoom::where('user_id', $user)->get()
         ]);
     }
 
-    public function openMail()
+    public function openMail($chatId)
     {
-        $userId = request('userId');
-        $status = request('status');
+        $chatId = request('chatId');
 
-        $user = User::find($userId);
-
-        Mail::where('user_id', $user->id)->update([
-            'status' => $status
-        ]);
-
-        $userIdDetail = $user->id;
-
+        $dataChat = ChatRoom::where('chat_id', $chatId)->get();
         if (Auth::user()->is_admin){
             return view('dashboard.mail.mailAdmin', [
                 'penerima' => Mail::where('contact_id', Auth::user()->id)->get(),
             ]);
         } else {
             return view('dashboard.mail.mailUser', [
-                'penerima' => Mail::where('contact_id', $userIdDetail)->get(),
+                'Mail' => $dataChat,
+                // 'User' => User::where('id', $dataChat[0]->user_id)
             ]);
         }
     }
 
-    public function detail($contactId)
+    public function detail($chatId)
     {
-        $mails = Mail::where('contact_id', $contactId)->get();
 
         if (Auth::user()->is_admin) {
             return view('dashboard.mail.mailAdmin', [
-                'pengirim' => $mails,
+                'pengirim' => $chatId,
             ]);
         } else {
             return view('dashboard.mail.mailUser', [
-                'penerima' => Mail::where('contact_id', $contactId)->get(),
+                'Mail' => ChatRoom::where('chat_id', $chatId)->get(),
             ]);
         }
     }
@@ -61,51 +54,53 @@ class MailController extends Controller
 
     public function sendMail()
     {
+        $chatId = request('chatId');
+        $receiverId = request('receiverId');
+        $senderId = request('senderId');
+        $message = request('message');
 
-        $user = Auth::user();
-
-        // Mengambil nilai-nilai dari $_POST
-
-        $status = $_POST['status'];
-        $pesan = $_POST['pesan'];
-        $contactId = $_POST['contactId'];
-        $recipientId = $_POST['recipientId'];
-        $userId = $user->id;
-
-        // Membuat array asosiatif untuk data yang akan divalidasi
-        $dataToValidate = [
-            'status' => $status,
-            'pesan' => $pesan,
-            'contact_id' => $contactId,
-            'user_id' => $userId,
-            'recipient_id' => $recipientId
+        $dataToMails = [
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
         ];
 
-        // Menentukan aturan validasi
-        $rules = [
-            'status' => 'required|max:20|string',
-            'pesan' => 'required|string',
-            'contact_id' => 'required|max:20|string',
-            'user_id' => 'required|max:20|integer',
-            'recipient_id' => 'required|max:20|integer'
+        $name = User::where('id', $senderId)->get();
+
+        $dataToChatRooms = [
+            'chat_id' => $chatId,
+            'user_id' => $senderId,
+            'message' => $message,
+            'name'    => $name[0]->name,
         ];
 
-        // Melakukan validasi
-        $validator = Validator::make($dataToValidate, $rules);
+        $rulesMails = [
+            'sender_id' => 'required|integer',
+            'receiver_id' => 'required|integer',
+        ];
+
+        $rulesChatRooms = [
+            'chat_id' => 'required|integer',
+            'message' => 'required|max:1000|string',
+            'user_id' => 'required|integer',
+            'name' => 'required|max:225|string',
+        ];
+
+        $validatorMails = Validator::make($dataToMails, $rulesMails);
+        $validatorChatRooms = Validator::make($dataToChatRooms, $rulesChatRooms);
 
         // Memeriksa apakah validasi berhasil
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        if ($validatorMails->fails()) {
+            echo "validatorChatMails Error ";
         }
 
-        Mail::where('contact_id', $contactId)->update([
-            'status' => $status,
-        ]);
+        if ($validatorChatRooms->fails()) {
+            echo "validatorChatRooms Error ";
+        }
 
-        // Jika validasi berhasil, data akan disimpan ke dalam tabel Mail
-        Mail::create($dataToValidate);
+        Mail::create($dataToMails);
+        ChatRoom::create($dataToChatRooms);
 
-        return redirect('/dashboard/mail/detail/' . $contactId)->with('success', 'Mail terkirim!');
+        return redirect('/dashboard/mail/detail/' . $chatId)->with('success', 'Mail terkirim!');
     }
 
     public function createMail()
