@@ -44,6 +44,15 @@
                 </div>
                 @enderror
               </div>
+              <div class="form-floating">
+                <input type="password" name="confPassword" class="form-control mb-2 rounded-bottom @error('confPassword') is-invalid @enderror" id="confPassword" placeholder="Confirm Password" required>
+                <label for="confPassword">Confirm Password</label>
+                @error('confPassword')
+                <div class="invalid-feedback">
+                  {{ $message }}
+                </div>
+                @enderror
+              </div>
               <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Register</button>
             </form>
             <small class="d-block text-center mt-3">Already registered? <a href="/login">Login</a></small>

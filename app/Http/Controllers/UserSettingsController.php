@@ -133,4 +133,11 @@ class UserSettingsController extends Controller
             'user' => $user
         ]);
     }
+
+    public function changePhoto(User $user)
+    {
+        return view('dashboard.user-settings.photo', [
+            'user' => $user
+        ]);
+    }
 }

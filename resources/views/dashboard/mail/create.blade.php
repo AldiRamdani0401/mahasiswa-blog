@@ -8,10 +8,11 @@
 <div class="col-lg-8">
     <form method="post" action="/dashboard/mail/send" class="mb-3">
         <input type="hidden" name="status" value="Sent">
+        <input type="hidden" name="contactId" value="{{ Auth::user()->id }}">
         @csrf
         <div class="mb-3">
             <label for="category" class="form-label">Contact</label>
-            <select class="form-select" name="contactId">
+            <select class="form-select" name="recipientId">
                 @foreach ($users as $user)
                     <option value="{{ $user->id }}">
                         {!! $auth->name !== $user->name ? $user->name : '-- Pilih User --' !!}

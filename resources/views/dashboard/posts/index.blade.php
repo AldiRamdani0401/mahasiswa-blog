@@ -11,9 +11,9 @@
   </div>
   @endif
 
-  <div class="table-responsive col-lg-8">
-    <a href="/dashboard/posts/create" class="btn btn-primary">Create new post</a>
-    <table class="table table-striped table-sm">
+  <a href="/dashboard/posts/create" class="btn btn-primary mb-3">Create new post</a>
+  <div class="table-responsive" style="border: solid black 1px ;max-height: 400px; overflow-y: auto;">
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th scope="col">#</th>

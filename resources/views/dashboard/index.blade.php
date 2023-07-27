@@ -9,7 +9,7 @@
 <div class="card shadow-sm p-2" style="width: 300px; height:450px;">
   <h4 class="text-center fw-bold bg-primary p-2 text-white">Profile</h4>
   <div class="d-flex justify-content-center">
-      <img src="img/aldi.jpg" alt="{{ $user->name }}" width="200" height="200" class="img-thumbnail">
+      <img src="img/dummy-avatar.jpg" alt="{{ $user->name }}" width="200" height="200" class="img-thumbnail">
   </div>
   <div class="card-body d-flex justify-content-center">
   <table class="table">

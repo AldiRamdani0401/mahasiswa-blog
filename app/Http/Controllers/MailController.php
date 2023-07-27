@@ -32,20 +32,44 @@ class MailController extends Controller
 
         $userIdDetail = $user->id;
 
-        return view('dashboard.mail.detail', [
-            'penerima' => Mail::where('contact_id', Auth::user()->id)->get(),
-            'pengirim' => Mail::where('contact_id', $userIdDetail)->get(),
-        ]);
+        if (Auth::user()->is_admin){
+            return view('dashboard.mail.mailAdmin', [
+                'pengirim' => Mail::where('contact_id', $userIdDetail)->get(),
+            ]);
+        } else {
+            return view('dashboard.mail.mailUser', [
+                'penerima' => Mail::where('contact_id', $userIdDetail)->get(),
+            ]);
+        }
     }
+
+    public function detail($contactId)
+    {
+        $mails = Mail::where('contact_id', $contactId)->get();
+
+        if (Auth::user()->is_admin) {
+            return view('dashboard.mail.mailAdmin', [
+                'pengirim' => $mails,
+            ]);
+        } else {
+            return view('dashboard.mail.mailUser', [
+                'penerima' => Mail::where('contact_id', $contactId)->get(),
+            ]);
+        }
+    }
+
 
     public function sendMail()
     {
+
         $user = Auth::user();
 
         // Mengambil nilai-nilai dari $_POST
+
         $status = $_POST['status'];
         $pesan = $_POST['pesan'];
         $contactId = $_POST['contactId'];
+        $recipientId = $_POST['recipientId'];
         $userId = $user->id;
 
         // Membuat array asosiatif untuk data yang akan divalidasi
@@ -54,13 +78,13 @@ class MailController extends Controller
             'pesan' => $pesan,
             'contact_id' => $contactId,
             'user_id' => $userId,
-            'recipient_id' => $contactId
+            'recipient_id' => $recipientId
         ];
 
         // Menentukan aturan validasi
         $rules = [
             'status' => 'required|max:20|string',
-            'pesan' => 'required|max:255|string',
+            'pesan' => 'required|string',
             'contact_id' => 'required|max:20|string',
             'user_id' => 'required|max:20|integer',
             'recipient_id' => 'required|max:20|integer'
@@ -84,20 +108,23 @@ class MailController extends Controller
         return redirect('/dashboard/mail/detail/' . $contactId)->with('success', 'Mail terkirim!');
     }
 
-
-    public function detail($contactId)
-    {
-        return view('dashboard.mail.detail', [
-            'mails' => Mail::where('contact_id', $contactId)->get()
-        ]);
-    }
-
-
     public function createMail()
     {
         return view('dashboard.mail.create', [
             'users' => User::all(),
             'auth' => Auth::user()
         ]);
+    }
+
+    public function destroy()
+    {
+        $contactId = $_POST['contactId'];
+        if (Auth::user()->is_admin) {
+            Mail::destroy($_POST['id']);
+            return redirect('/dashboard/mail/detail/'.$contactId)->with('succes', 'Mail berhasil dihapus!');
+        } else {
+            Mail::destroy($_POST['id']);
+            return redirect('/dashboard/mail/detail/'.$contactId)->with('succes', 'Mail berhasil dihapus!');
+        }
     }
 }

@@ -60,22 +60,6 @@ Route::get('/categories', function() {
     ]);
 });
 
-// Route::get('/categories/{category:slug}', function(Category $category){
-//     return view('posts', [
-//         'title' => "Post By Category : $category->name",
-//         'active' => 'categories',
-//         'posts' => $category->posts->load('category', 'author')
-//     ]);
-// });
-
-// Route::get('/authors/{author:username}', function (User $author){
-//     return view('posts', [
-//         'title' => "Post By Author : $author->name ",
-//         "active" => 'posts',
-//         'posts' => $author->posts->load('category', 'author')
-//     ]);
-// });
-
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout']);
@@ -121,7 +105,13 @@ Route::get('/dashboard/user-settings/show/{user}/change', [UserSettingsControlle
 
 
 Route::get('/dashboard/mail/', [MailController::class,'index']);
+
 Route::put('/dashboard/mail/detail', [MailController::class, 'openMail']);
+
 Route::get('/dashboard/mail/detail/{contactId}', [MailController::class, 'detail']);
+
 Route::post('/dashboard/mail/send', [MailController::class,'sendMail']);
+
 Route::get('/dashboard/mail/create', [MailController::class, 'createMail']);
+
+Route::delete('/dashboard/mail/delete', [MailController::class, 'destroy']);

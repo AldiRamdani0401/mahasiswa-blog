@@ -63,10 +63,11 @@
                 </div>
                 @enderror
               </div>
-              <button class="w-50 btn btn-success mt-3" type="submit">Save</button>
+              <button class="w-50 btn btn-success mt-3" type="submit"><b>Save</b></button>
             </form>
             <div class="text-center">
-              <a class="btn btn-primary mt-3" href="/dashboard/account-settings/change">Change Password</a>
+              <a class="btn btn-primary mt-3" href="/dashboard/account-settings/change">Change <b>Password</b></a>
+              <a class="btn btn-primary mt-3 border" href="/dashboard/account-settings/change-photo">Change <b>Photo</b></a>
             </div>
         </main>
     </div>
