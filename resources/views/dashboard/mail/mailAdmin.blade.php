@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         @if (Auth::user()->is_admin)
-            @foreach ($pengirim as $mail)
+            @foreach ($penerima as $mail)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $mail->pengirim->name }}</td>
@@ -56,7 +56,7 @@
     <main class="form-signin mt-5 text-center">
     <form action="/dashboard/mail/send" method="post">
     @csrf
-    @foreach ($pengirim as $mail)
+    @foreach ($penerima as $mail)
         <input type="hidden" name="contactId" value="{{ $mail->contact_id }}">
         <input type="hidden" name="status" value="Reply">
         <input type="hidden" name="recipientId" value="{{ $mail->pengirim->id }}">

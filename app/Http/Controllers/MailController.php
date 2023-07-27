@@ -34,7 +34,7 @@ class MailController extends Controller
 
         if (Auth::user()->is_admin){
             return view('dashboard.mail.mailAdmin', [
-                'pengirim' => Mail::where('contact_id', $userIdDetail)->get(),
+                'penerima' => Mail::where('contact_id', Auth::user()->id)->get(),
             ]);
         } else {
             return view('dashboard.mail.mailUser', [
