@@ -13,7 +13,7 @@
 </div>
 @endif
 
-<div class="table-responsive" style="border: solid black 1px ;max-height: 400px; overflow-y: auto;">
+<div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>

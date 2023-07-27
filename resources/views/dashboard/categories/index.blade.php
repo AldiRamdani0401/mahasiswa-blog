@@ -11,9 +11,10 @@
   </div>
   @endif
 
-  <div class="table-responsive col-lg-6">
-    <a href="/dashboard/categories/create" class="btn btn-primary">Create new category</a>
-    <table class="table table-striped table-sm">
+  <a href="/dashboard/categories/create" class="btn btn-primary mb-3">Create new category</a>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th scope="col">#</th>

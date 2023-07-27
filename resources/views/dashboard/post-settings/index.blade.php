@@ -11,8 +11,8 @@
 </div>
 @endif
 
-<div class="table-responsive col-lg-6">
-    <table class="table table-striped table-sm">
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th scope="col">#</th>

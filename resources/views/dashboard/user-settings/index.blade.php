@@ -11,8 +11,8 @@
 </div>
 @endif
 
-<div class="table-responsive col-lg-6">
-    <table class="table table-striped table-sm">
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -25,7 +25,7 @@
         @foreach ($users as $user)
             @if(!$user['is_admin'] == 1)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td>{{ $loop->iteration - 1 }}</td>
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
                 <td>
