@@ -23,7 +23,7 @@
           @endif
         </div>
             <h1 class="h3 mb-3 fw-normal text-center">Edit Profile</h1>
-            <form action="/dashboard/account-settings/update" method="post" class="text-center">
+            <form action="/dashboard/account-settings/update" method="post" class="text-center" enctype="multipart/form-data">
               @method('put')
               @csrf
               <input type="hidden" name="id" id="id" placeholder="name" required value="{{ $user->id }}">
@@ -54,6 +54,25 @@
                 </div>
                 @enderror
               </div>
+              <div class="mb-3">
+                <input type="hidden" name="oldImage" value="{{ $user->image }}">
+
+                @if ($user->image)
+                     <img src="{{ asset('storage/' . $user->image) }}" class="img-preview img-fluid mb-3 col-sm-5 d-block">
+                @else
+                    <img class="img-preview img-fluid mb-3 col-sm-5">
+                @endif
+
+                <img class="img-preview img-fluid mb-3 col-sm-5">
+                <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" onchange="previewImage()">
+
+                @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+
+              </div>
               <div class="form-floating">
                 <input type="password" name="password" class="form-control mb-2 rounded-bottom @error('password') is-invalid @enderror" id="password" placeholder="Password" required>
                 <label for="password">Password</label>
@@ -67,10 +86,25 @@
             </form>
             <div class="text-center">
               <a class="btn btn-primary mt-3" href="/dashboard/account-settings/change">Change <b>Password</b></a>
-              <a class="btn btn-primary mt-3 border" href="/dashboard/account-settings/change-photo">Change <b>Photo</b></a>
             </div>
         </main>
     </div>
 </div>
+
+<script>
+      function previewImage(){
+        const image = document.querySelector('#image');
+        const imgPreview = document.querySelector('.img-preview');
+
+        imgPreview.style.display = 'block';
+
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL( image.files[0] );
+
+        oFReader.onload = function(oFReader){
+            imgPreview.src = oFReader.target.result;
+        }
+    }
+</script>
 
 @endsection

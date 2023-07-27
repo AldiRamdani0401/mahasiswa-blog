@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AccountSettings extends Controller
 {
@@ -82,9 +83,17 @@ class AccountSettings extends Controller
                 'name' => 'required|max:255',
                 'username' => 'required|max:255',
                 'email' => 'required|email:dns',
+                'image' => 'image|file|max:1024'
             ];
 
             $validatedData = $request->validate($rules);
+
+            if($request->file('image')) {
+                if ($request->oldImage) {
+                    Storage::delete($request->oldImage);
+                }
+                $validatedData['image'] = $request->file('image')->store('user-images');
+            }
 
             User::where('id', $user->id)->update($validatedData);
 

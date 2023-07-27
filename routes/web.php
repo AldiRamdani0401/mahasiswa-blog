@@ -3,7 +3,6 @@
 // use App\Models\Post;
 // use App\Models\User;
 
-use App\Http\Controllers\AccountSettings;
 use App\Models\Category;
 use App\Models\User;
 
@@ -16,6 +15,7 @@ use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserSettingsController;
+use App\Http\Controllers\AccountSettings;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +94,7 @@ Route::resource('/dashboard/account-settings', AccountSettings::class)->middlewa
 
 Route::put('/dashboard/account-settings/update', [SettingsController::class, 'update'])->middleware('auth');
 
+Route::get('/dashboard/account-settings/photo/', [PhotoSettings::class, 'index']);
 
 Route::resource('/dashboard/user-settings', UserSettingsController::class)->middleware('auth');
 
@@ -102,7 +103,6 @@ Route::get('/dashboard/user-settings/show/{user}', [UserSettingsController::clas
 Route::put('/dashboard/user-settings/update', [UserSettingsController::class, 'update'])->name('user-settings.update');
 
 Route::get('/dashboard/user-settings/show/{user}/change', [UserSettingsController::class, 'change']);
-
 
 Route::get('/dashboard/mail/', [MailController::class,'index']);
 
