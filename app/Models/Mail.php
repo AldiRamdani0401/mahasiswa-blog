@@ -12,7 +12,7 @@ class Mail extends Model
     protected $with = ['pengirim'];
 
     // Attribut yang dapat diisi secara massal
-    protected $fillable = ['sender_id', 'receiver_id'];
+    protected $fillable = ['chat_id', 'sender_id', 'receiver_id', 'pengirim', 'penerima', 'message'];
 
     public function pengirim()
     {

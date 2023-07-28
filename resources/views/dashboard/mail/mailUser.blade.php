@@ -18,7 +18,7 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Pengirim</th>
+                <th scope="col">Chat</th>
                 <th scope="col">Pesan</th>
                 <th scope="col">Action</th>
             </tr>
@@ -26,27 +26,27 @@
         <tbody>
             @if ($Mail->count() > 0)
                 @foreach ($Mail as $mail)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $mail->name }}</td>
-                        <td>{{ $mail->message }}</td>
-                        @if ($mail->user_id == Auth::user()->id)
+                <tr key="{{ $mail->id }}">
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $mail->pengirim }}</td>
+                    <td>{{ $mail->message }}</td>
+                    @if ($mail->pengirim == Auth::user()->name)
                         <td>
                             <form action="/dashboard/mail/delete" method="post" class="d-inline">
                                 @method('delete')
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $mail->id }}">
-                                {{-- <input type="hidden" name="contactId" value="{{ $mail->contact_id }}"> --}}
+                                <input type="hidden" name="chatId" value="{{ $mail->chat_id }}">
                                 <button class="badge bg-danger border-0" onclick="return confirm('Are you sure?')">
                                     <span data-feather="x-circle"></span>
                                 </button>
                             </form>
                         </td>
-                        @else
-                            <td></td>
-                        @endif
-                    </tr>
-                @endforeach
+                    @else
+                        <td></td>
+                    @endif
+                </tr>
+            @endforeach
             @else
                 <tr>
                     <td colspan="5"><h1>No incoming mail</h1></td>
@@ -60,7 +60,7 @@
         @csrf
         @foreach ($Mail as $mail)
             <input type="hidden" name="chatId" value="{{ $mail->chat_id }}">
-            <input type="hidden" name="receiverId" value="{{ abs($mail->user_id - $mail->chat_id);
+            <input type="hidden" name="receiverId" value="{{ abs(Auth::user()->id - $mail->chat_id);
             }}">
             <input type="hidden" name="senderId" value="{{ Auth::user()->id }}">
         @endforeach

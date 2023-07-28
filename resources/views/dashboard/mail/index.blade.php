@@ -17,36 +17,53 @@
     <table class="table table-bordered text-center">
         <thead>
             <tr>
-                <th scope="col">Pengirim</th>
+                <th scope="col">Chat</th>
                 <th scope="col">Waktu</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
-        @php
-            $pengirimNames = [];
-        @endphp
 
-        @foreach ($mails as $mail)
-            @if (!in_array($mail->pengirim->name, $pengirimNames))
-                @if ($mail->pengirim->name !== Auth::user()->name)
-                @php
-                    $pengirimNames[] = $mail->pengirim->name;
-                @endphp
-                <tr>
-                    <td>{{ $mail->pengirim->name }}</td>
-                    <td>{{ $mail->created_at }}</td>
-                    <td>
-                        <form action="/dashboard/mail/detail/{{ $chatId[0]->chat_id }}" method="post" class="d-inline">
-                            @csrf
-                            <input type="hidden" name="chatId" value="{{ $chatId[0]->chat_id }}">
-                            <button class="badge bg-primary border-0"><span data-feather="mail"></span></button>
-                        </form>
-                    </td>
-                </tr>
+            @php
+            $displayedNames = [];
+            @endphp
+
+            @foreach ($mails as $mail)
+                @if ($mail->pengirim !== Auth::user()->name && !in_array($mail->pengirim, $displayedNames))
+                    @php
+                        $displayedNames[] = $mail->pengirim;
+                    @endphp
+                    <tr>
+                        <td>{{ $mail->pengirim }}</td>
+                        <td>{{ $mail->created_at }}</td>
+                        <td>
+                            <form action="/dashboard/mail/detail/{{ $mail->chat_id }}" method="post" class="d-inline">
+                                @csrf
+                                <input type="hidden" name="chatId" value="{{ $mail->chat_id }}">
+                                <button class="badge bg-primary border-0"><span data-feather="mail"></span></button>
+                            </form>
+                        </td>
+                    </tr>
                 @endif
-            @endif
-        @endforeach
+            @endforeach
+            @foreach ($mails as $mail)
+                @if ($mail->penerima !== Auth::user()->name && !in_array($mail->penerima, $displayedNames))
+                    @php
+                        $displayedNames[] = $mail->penerima;
+                    @endphp
+                    <tr>
+                        <td>{{ $mail->penerima }}</td>
+                        <td>{{ $mail->created_at }}</td>
+                        <td>
+                            <form action="/dashboard/mail/detail/{{ $mail->chat_id }}" method="post" class="d-inline">
+                                @csrf
+                                <input type="hidden" name="chatId" value="{{ $mail->chat_id }}">
+                                <button class="badge bg-primary border-0"><span data-feather="mail"></span></button>
+                            </form>
+                        </td>
+                    </tr>
+                @endif
+            @endforeach
         </tbody>
     </table>
 </div>
